@@ -1,0 +1,66 @@
+{
+    "metadata": {
+        "module": "vol_ctrl.json",
+        "label": "Volume control",
+        "description": "A very primitive volume control module for phRemote",
+        "author": "algb12",
+        "author_email": "algb12.19@gmail.com",
+        "date_created": "2017-03-07"
+    },
+    "init": {
+        "datafields": {
+            "vol_level": {
+                "OSX": "osascript -e 'output volume of (get volume settings)'",
+                "LINUX": "awk -F'[][]' '/dB/ { print $2 }' <(amixer sget Master)"
+            },
+            "vol_mute_state": {
+                "OSX": "if [[ `osascript -e 'output muted of (get volume settings)'` = 'false' ]]; then echo unmuted; else echo muted; fi",
+                "LINUX": "amixer get Master | awk -F'dB] ' 'NR == 5 {print $2;}'"
+            }
+        }
+    },
+    "updaters": {
+        "vol_level": {
+            "OSX": "osascript -e 'output volume of (get volume settings)'",
+            "LINUX": "awk -F'[][]' '/dB/ { print $2 }' <(amixer sget Master)"
+        },
+        "vol_mute_state": {
+            "OSX": "if [[ `osascript -e 'output muted of (get volume settings)'` = 'false' ]]; then echo unmuted; else echo muted; fi",
+            "LINUX": "amixer get Master | awk -F'dB] ' 'NR == 5 {print $2;}'"
+        }
+    },
+    "commands": {
+        "vol_down": {
+            "label": "Vol -",
+            "cmd": {
+                "OSX": "osascript -e 'set volume output volume ((output volume of (get volume settings)) - 6.25)'",
+                "LINUX": "amixer -M set Master 5%-"
+            },
+            "updaters": ["vol_level", "vol_mute_state"]
+        },
+        "vol_up": {
+            "label": "Vol +",
+            "cmd": {
+                "OSX": "osascript -e 'set volume output volume ((output volume of (get volume settings)) + 6.25)'",
+                "LINUX": "amixer -M set Master 5%+"
+            },
+            "updaters": ["vol_level", "vol_mute_state"]
+        },
+        "vol_mute_toggle": {
+            "label": "Mute / unmute",
+            "cmd": {
+                "OSX": "if [[ `osascript -e 'output muted of (get volume settings)'` = 'false' ]]; then osascript -e 'set volume with output muted'; else osascript -e 'set volume without output muted'; fi",
+                "LINUX": "amixer set Master toggle"
+            },
+            "updaters": ["vol_mute_state"]
+        }
+    },
+    "info": {
+        "vol_level": {
+            "label": "Volume level:"
+        },
+        "vol_mute_state": {
+            "label": "Muted:"
+        }
+    }
+}

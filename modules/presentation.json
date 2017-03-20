@@ -1,0 +1,24 @@
+{
+    "metadata": {
+        "module": "presentation.json",
+        "label": "Presentation",
+        "description": "Back and forward clicker",
+        "author": "algb12",
+        "author_email": "algb12.19@gmail.com",
+        "date_created": "2017-03-12"
+    },
+    "commands": {
+        "arrow_left": {
+            "label": "< Back",
+            "cmd": {
+                "OSX": "osascript -e 'tell application \"System Events\" to key code 123'"
+            }
+        },
+        "arrow_right": {
+            "label": "Forward >",
+            "cmd": {
+                "OSX": "osascript -e 'tell application \"System Events\" to key code 124'"
+            }
+        }
+    }
+}
