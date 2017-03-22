@@ -5,6 +5,10 @@
  */
 class PhRemoteUI
 {
+    /**
+     * An array containing all modules and actions
+     * @var array
+     */
     public $modules;
     public function __construct()
     {
@@ -15,6 +19,12 @@ class PhRemoteUI
         }
     }
 
+    /**
+     * Generates the UI for phRemote
+     * @param  string $module Module file name
+     * @param  string $action Action name as defined in modules
+     * @return string         phRemote HTML markup
+     */
     public function generateUICode($module = '', $action = '')
     {
         $out = <<<EOT

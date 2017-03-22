@@ -5,7 +5,15 @@
  */
 class PhRemoteCMDHandler
 {
+    /**
+     * The host OS (OSX/WIN/LINUX/UNKNOWN)
+     * @var string
+     */
     public $hostOS;
+    /**
+     * An array containing all modules and actions
+     * @var array
+     */
     public $modules;
     public function __construct()
     {
@@ -18,6 +26,10 @@ class PhRemoteCMDHandler
         }
     }
 
+    /**
+     * Returns the detected host OS
+     * @return string Host OS abbreviation (OSX/WIN/LINUX/UNKNOWN)
+     */
     public static function getOS()
     {
         switch (true) {
@@ -28,6 +40,12 @@ class PhRemoteCMDHandler
         }
     }
 
+    /**
+     * Checks if an action exists in a given module
+     * @param  string $module Module file name
+     * @param  string $action Action name as defined in module
+     * @return bool           Whether the action exists
+     */
     public function actionExists($module, $action)
     {
         if (isset($this->modules[$module]['commands'][$action]['cmd'][$this->hostOS])) {
@@ -37,6 +55,13 @@ class PhRemoteCMDHandler
         return false;
     }
 
+    /**
+     * Executes an action
+     * @param  string $module Module file name
+     * @param  string $action Action name as defined in module
+     * @param  string $params Optional parameters than can be passed to the action
+     * @return string         Output of the executed command on host
+     */
     public function execAction($module, $action, $params = '')
     {
         error_log('Executing command: '.$this->modules[$module]['commands'][$action]['cmd'][$this->hostOS].PHP_EOL);
@@ -44,6 +69,12 @@ class PhRemoteCMDHandler
         return shell_exec($this->modules[$module]['commands'][$action]['cmd'][$this->hostOS]);
     }
 
+    /**
+     * Executes an updater action and returns result in callback
+     * @param  string $module Module file name
+     * @param  string $action Action name as defined in modules
+     * @return array          The result array of the updater(s)
+     */
     public function execUpdater($module, $action)
     {
         if (isset($this->modules[$module]['commands'][$action]['updaters'])) {
@@ -57,10 +88,13 @@ class PhRemoteCMDHandler
 
             return $callback;
         }
-        // $callback['value'] = shell_exec($this->modules[$module]['commands'][$action]['callback'][$this->hostOS]);
-        // $callback['field'] = $this->modules[$module]['commands'][$action]['datafield'];
     }
 
+    /**
+     * Returns a JSON array of initial settings
+     * @param  string $dataJSON The JSON defining the datafields to be retrieved
+     * @return string           The JSON containing the results for the datafields
+     */
     public function getInitData($dataJSON)
     {
         error_log('User: '.`whoami`);
