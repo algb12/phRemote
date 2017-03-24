@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 // error_reporting(E_ALL); ini_set('display_errors', 1);
 
 /**
@@ -7,6 +9,15 @@
  */
 require 'PhRemoteCMDHandler.php';
 $handler = new PhRemoteCMDHandler();
+
+if (isset($_SESSION['user_logged_in']) && !$_SESSION['user_logged_in']) {
+    $response['status'] = 'notloggedin';
+    $responseJSON = json_encode($response);
+    error_log('Request returned: '.$responseJSON.PHP_EOL);
+    echo $responseJSON;
+
+    return;
+}
 
 $op = $_POST['op'];
 @$module = $_POST['module'];

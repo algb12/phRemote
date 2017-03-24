@@ -6,7 +6,8 @@
 class PhRemoteUI
 {
     /**
-     * An array containing all modules and actions
+     * An array containing all modules and actions.
+     *
      * @var array
      */
     public $modules;
@@ -17,15 +18,20 @@ class PhRemoteUI
         foreach ($modules['modules'] as $module) {
             $this->modules[$module] = json_decode(file_get_contents(__DIR__."/../modules/$module"), true);
         }
+
+        // Require config
+        require_once __DIR__.'/../config/config.php';
     }
 
     /**
-     * Generates the UI for phRemote
-     * @param  string $module Module file name
-     * @param  string $action Action name as defined in modules
-     * @return string         phRemote HTML markup
+     * Generates the UI for phRemote.
+     *
+     * @param string $module Module file name
+     * @param string $action Action name as defined in modules
+     *
+     * @return string phRemote HTML markup
      */
-    public function generateUICode($module = '', $action = '')
+    public function controlUI($module = '', $action = '')
     {
         $out = <<<EOT
         <!DOCTYPE html>
@@ -61,7 +67,48 @@ EOT;
             }
         }
 
+        if (AUTH_ENABLED === true) {
+            $out .= <<<EOT
+            <form method="POST" action="">
+                <input type="submit" name="logout" value="Log out">
+            </form>
+EOT;
+        }
+
         $out .= <<<EOT
+        </body>
+        </html>
+EOT;
+
+        return $out;
+    }
+
+    public function loginUI()
+    {
+        $out = <<<EOT
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <link type="text/css" rel="stylesheet" href="web/phRemote.css">
+            <script src="web/phRemote.js"></script>
+            <title>phRemote prototype</title>
+        </head>
+        <body>
+            <h1>phRemote - Log in</h1>
+            <form method="POST" action="">
+                <div class="form_group username_group">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username">
+                </div>
+                <div class="form_group password_group">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password">
+                </div>
+                <input type="submit" name="login" value="Log in">
+            </form>
         </body>
         </html>
 EOT;

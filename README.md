@@ -1,7 +1,9 @@
 # phRemote
+
 A remote which works wherever PHP works. All that's required is that your computer runs PHP at least on version 5.4.0 (for the integrated PHP web-server), with the JSON module installed and enabled.
 
 ## Running phRemote
+
 To run phRemote, simply download this repository as a ZIP-file, and extract its contents into a directory. In a terminal, switch to this directory, and run `php -S 192.168.0.2:8000`, using the IP address and port of your choice.
 
 phRemote will automatically generate a UI from the loaded modules, and allow you to control your computer using commands from modules (see below on how to write a module).
@@ -11,6 +13,7 @@ The client browser should support JSON and rudimentary AJAX capabilities, and ha
 To access the phRemote UI, simply go to the IP address and port with which the server was started.
 
 ## Modules
+
 phRemote is cross-platform by using "modules", which support, multiple platforms. Modules are JSON files following the schema below:
 
 ```json
@@ -75,6 +78,7 @@ phRemote is cross-platform by using "modules", which support, multiple platforms
 ```
 
 ### Sections of a module
+
 The `metadata` section contains all the relevant information about the module itself. The most important field is the `module` field, which MUST be equivalent to the filename of the module.
 
 The `init` section contains the commands to be executed which retrieve the initial state of the different parameters. The so-called "datafields" are the areas of the UI where the data for the relevant parameters is displayed. Not all modules must contain an `init` section.
@@ -86,6 +90,7 @@ The `commands` section MUST be present in every module. It contains the command 
 The `info` section defines the datafields displaying values for parameters.
 
 ### OS/Platform types
+
 A module may contain commands which are executed depending on the OS phRemote runs on. The 4 OS types are:
 
 - Windows: `WIN`
@@ -94,6 +99,7 @@ A module may contain commands which are executed depending on the OS phRemote ru
 - Unknown: `UNKNOWN`
 
 ### The modules.json file
+
 `modules.json`, found in the `config` directory, contains an array of modules phRemote should load, as follows:
 
 ```json
@@ -105,5 +111,14 @@ A module may contain commands which are executed depending on the OS phRemote ru
 }
 ```
 
+## Config
+
+### Authentication
+
+phRemote has basic authentication, which can be enabled or disabled. By default it is disabled, and the default username is **admin** and the password is **password**.
+
+To enable authentication, edit the `config.php` file in the config directory.
+
 ## Contributions and feedback
+
 If you have any questions and/or feedback, or are willing to create cross-platform modules for phRemote, please do not hesitate to contact me via my email: <algb12.19@gmail.com> or open up any issues you may face on GitHub!
