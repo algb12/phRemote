@@ -7,16 +7,22 @@ session_start();
 /**
  * phRemote API.
  */
-require 'PhRemoteCMDHandler.php';
+
+// Require config
+require_once __DIR__.'/../config/config.php';
+
+require_once __DIR__.'/PhRemoteCMDHandler.php';
 $handler = new PhRemoteCMDHandler();
 
-if (isset($_SESSION['user_logged_in']) && !$_SESSION['user_logged_in']) {
-    $response['status'] = 'notloggedin';
-    $responseJSON = json_encode($response);
-    error_log('Request returned: '.$responseJSON.PHP_EOL);
-    echo $responseJSON;
+if (AUTH_ENABLED) {
+    if (empty($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] === false) {
+        $response['status'] = 'notloggedin';
+        $responseJSON = json_encode($response);
+        error_log('Request returned: '.$responseJSON.PHP_EOL);
+        echo $responseJSON;
 
-    return;
+        return;
+    }
 }
 
 $op = $_POST['op'];

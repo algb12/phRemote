@@ -21,7 +21,7 @@ if (AUTH_ENABLED) {
         $_SESSION['user_logged_in'] = true;
     }
 
-    if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']) {
+    if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true) {
         echo $ui->controlUI();
     } else {
         echo $ui->loginUI();

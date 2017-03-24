@@ -3,7 +3,7 @@
 // Should authentication be enabled?
 // Default: false
 // Possible values: true, false
-define('AUTH_ENABLED', false);
+define('AUTH_ENABLED', true);
 
 // What is the log-in username?
 // Default: admin
