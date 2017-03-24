@@ -9,8 +9,9 @@ $ui = new PhRemoteUI();
 
 if (AUTH_ENABLED) {
     if (isset($_POST['logout'])) {
-        // $_SESSION['user_logged_in'] = false;
+        $_SESSION['user_logged_in'] = false;
         unset($_SESSION);
+        session_destroy();
     }
 
     if (isset($_POST['username'])
