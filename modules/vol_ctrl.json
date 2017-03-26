@@ -57,7 +57,7 @@
         "vol_level": {
             "label": "Volume level",
             "input": {
-                "type": "slider",
+                "type": "range",
                 "range_min": 0,
                 "range_max": 100
             },

@@ -73,7 +73,7 @@ function exec(caller) {
     var module = caller.getAttribute('data-module');
     var action = caller.getAttribute('data-action');
     var queryparams = "op=exec&module=" + module + "&action=" + action;
-    if (caller.getAttribute('data-post-elem') !== undefined) {
+    if (caller.getAttribute('data-post-elem') !== null) {
         var elem = document.getElementsByName(caller.getAttribute('data-post-elem'))[0];
         queryparams += "&value=" + elem.value;
     }

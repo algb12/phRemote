@@ -64,6 +64,8 @@ EOT;
                     $out .= '<label for="'.$key.'">'.$action['label'].'</label>'.PHP_EOL;
                     $out .= '<input type="text" class="control_text" name="'.$key.'">'.PHP_EOL;
                     $out .= '<button type="button" onclick="exec(this)" data-module="'.$module['metadata']['module'].'" data-action="'.$key.'" data-post-elem="'.$key.'">Update</button>'.PHP_EOL;
+                } else {
+                    $out .= '<button type="button" class="control_btn" onclick="exec(this)" data-module="'.$module['metadata']['module'].'" data-action="'.$key.'">'.$action['label'].'</button>'.PHP_EOL;
                 }
                 $out .= '</div>';
             }
