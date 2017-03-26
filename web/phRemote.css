@@ -8,12 +8,19 @@ h1, h2, h3 {
     margin: 5px 0;
 }
 
-.control_group {
+.module_section {
     overflow: auto;
 }
 
-.control_btn {
+.control_group {
+    margin: 0;
+    padding: 0;
     width: 50%;
+    float: left;
+}
+
+.control_btn {
+    width: 100%;
     appearance: none;
     -webkit-appearance: none;
     border: none;
@@ -23,6 +30,17 @@ h1, h2, h3 {
     float: left;
     background-color: #ccc;
     font-size: 1em;
+}
+
+.control_text {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 5px 0;
+}
+
+.control_group input[type=range] {
+    width: 100%;
+    margin: 15px 0
 }
 
 .field_label {

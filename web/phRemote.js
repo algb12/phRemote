@@ -30,7 +30,10 @@ function loadInitValues() {
     // Collates all datafields into an array
     for (var elem in elems) {
         if (elems.hasOwnProperty(elem)) {
-            var data = {module: null, field: null};
+            var data = {
+                module: null,
+                field: null
+            };
             data.module = document.getElementsByName('datafield')[elem].getAttribute('data-module');
             data.field = document.getElementsByName('datafield')[elem].getAttribute('data-field');
             dataArr.push(data);
@@ -47,7 +50,7 @@ function loadInitValues() {
 
     // Runs AJAX query, response is the values for the datafields returned by the phRemote server
     ajax(APIURL, function(response) {
-        console.log("POST request succeeded. Server responded: " + response);
+        console.log("Server responded: " + response);
 
         // Turns returned JSON into an array
         var dataArr = JSON.parse(response);
@@ -57,7 +60,9 @@ function loadInitValues() {
             if (dataArr.hasOwnProperty(elem)) {
                 var field = document.getElementById(dataArr[elem].field);
                 var value = dataArr[elem].value;
+
                 field.innerHTML = value;
+                console.log(dataArr[elem].field + ': ' + value);
             }
         }
     }, queryparams);
@@ -68,12 +73,18 @@ function exec(caller) {
     var module = caller.getAttribute('data-module');
     var action = caller.getAttribute('data-action');
     var queryparams = "op=exec&module=" + module + "&action=" + action;
-
+    if (caller.getAttribute('data-post-elem') !== undefined) {
+        var elem = document.getElementsByName(caller.getAttribute('data-post-elem'))[0];
+        queryparams += "&value=" + elem.value;
+    }
+    if (caller.getAttribute('type') === 'range') {
+        queryparams += "&value=" + caller.value;
+    }
     console.log("POST request to: " + APIURL + " with params: " + queryparams);
 
     // Sends command to phRemote server and updates datafield if applicable
     ajax(APIURL, function(response) {
-        console.log("POST request succeeded. Server responded: " + response);
+        console.log("Server responded: " + response);
 
         // Turns JSON resposne from the phRemote server into an array
         var dataArr = JSON.parse(response);
@@ -88,7 +99,7 @@ function exec(caller) {
                     var value = dataArr.callback[elem].value;
 
                     field.innerHTML = value;
-                    console.log(value);
+                    console.log(dataArr.callback[elem].field + ': ' + value);
                 }
             }
         }

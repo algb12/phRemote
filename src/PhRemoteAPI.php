@@ -28,14 +28,14 @@ if (AUTH_ENABLED) {
 $op = $_POST['op'];
 @$module = $_POST['module'];
 @$action = $_POST['action'];
-@$params = $_POST['params'] ? explode(',', $_POST['params']) : '';
+@$value = $_POST['value'];
 
 if ($op === 'exec' && isset($module) && isset($action)) {
     $response['op'] = $op;
     $response['module'] = $module;
     $response['action'] = $action;
     if ($handler->actionExists($module, $action)) {
-        $handler->execAction($module, $action, $params);
+        $handler->execAction($module, $action, $value);
         $response['callback'] = $handler->execUpdater($module, $action);
         $response['status'] = 'success';
     } else {

@@ -6,12 +6,14 @@
 class PhRemoteCMDHandler
 {
     /**
-     * The host OS (OSX/WIN/LINUX/UNKNOWN)
+     * The host OS (OSX/WIN/LINUX/UNKNOWN).
+     *
      * @var string
      */
     public $hostOS;
     /**
-     * An array containing all modules and actions
+     * An array containing all modules and actions.
+     *
      * @var array
      */
     public $modules;
@@ -27,7 +29,8 @@ class PhRemoteCMDHandler
     }
 
     /**
-     * Returns the detected host OS
+     * Returns the detected host OS.
+     *
      * @return string Host OS abbreviation (OSX/WIN/LINUX/UNKNOWN)
      */
     public static function getOS()
@@ -41,10 +44,12 @@ class PhRemoteCMDHandler
     }
 
     /**
-     * Checks if an action exists in a given module
-     * @param  string $module Module file name
-     * @param  string $action Action name as defined in module
-     * @return bool           Whether the action exists
+     * Checks if an action exists in a given module.
+     *
+     * @param string $module Module file name
+     * @param string $action Action name as defined in module
+     *
+     * @return bool Whether the action exists
      */
     public function actionExists($module, $action)
     {
@@ -56,24 +61,32 @@ class PhRemoteCMDHandler
     }
 
     /**
-     * Executes an action
-     * @param  string $module Module file name
-     * @param  string $action Action name as defined in module
-     * @param  string $params Optional parameters than can be passed to the action
-     * @return string         Output of the executed command on host
+     * Executes an action.
+     *
+     * @param string $module Module file name
+     * @param string $action Action name as defined in module
+     * @param string $params Optional parameters than can be passed to the action
+     *
+     * @return string Output of the executed command on host
      */
-    public function execAction($module, $action, $params = '')
+    public function execAction($module, $action, $value = null)
     {
-        error_log('Executing command: '.$this->modules[$module]['commands'][$action]['cmd'][$this->hostOS].PHP_EOL);
+        $cmd = $this->modules[$module]['commands'][$action]['cmd'][$this->hostOS];
+        if ($value !== null) {
+            $cmd = str_replace('{{value}}', escapeshellcmd($value), $cmd);
+        }
+        error_log('Executing command: '.$cmd.PHP_EOL);
 
-        return shell_exec($this->modules[$module]['commands'][$action]['cmd'][$this->hostOS]);
+        return shell_exec($cmd);
     }
 
     /**
-     * Executes an updater action and returns result in callback
-     * @param  string $module Module file name
-     * @param  string $action Action name as defined in modules
-     * @return array          The result array of the updater(s)
+     * Executes an updater action and returns result in callback.
+     *
+     * @param string $module Module file name
+     * @param string $action Action name as defined in modules
+     *
+     * @return array The result array of the updater(s)
      */
     public function execUpdater($module, $action)
     {
@@ -91,9 +104,11 @@ class PhRemoteCMDHandler
     }
 
     /**
-     * Returns a JSON array of initial settings
-     * @param  string $dataJSON The JSON defining the datafields to be retrieved
-     * @return string           The JSON containing the results for the datafields
+     * Returns a JSON array of initial settings.
+     *
+     * @param string $dataJSON The JSON defining the datafields to be retrieved
+     *
+     * @return string The JSON containing the results for the datafields
      */
     public function getInitData($dataJSON)
     {

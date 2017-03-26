@@ -50,9 +50,22 @@ class PhRemoteUI
 EOT;
         foreach ($this->modules as $module) {
             $out .= '<h2>'.$module['metadata']['label'].'</h2>'.PHP_EOL;
-            $out .= '<div class="control_group">'.PHP_EOL;
+            $out .= '<div class="module_section">'.PHP_EOL;
             foreach ($module['commands'] as $key => $action) {
-                $out .= '<button type="button" class="control_btn" onclick="exec(this)" data-module="'.$module['metadata']['module'].'" data-action="'.$key.'">'.$action['label'].'</button>'.PHP_EOL;
+                $out .= '<div class="control_group">';
+                if (empty($action['input']['type']) || $action['input']['type'] === 'button') {
+                    $out .= '<button type="button" class="control_btn" onclick="exec(this)" data-module="'.$module['metadata']['module'].'" data-action="'.$key.'">'.$action['label'].'</button>'.PHP_EOL;
+                } elseif ($action['input']['type'] === 'range') {
+                    $range_min = isset($action['input']['range_min']) ? $action['input']['range_min'] : 0;
+                    $range_max = isset($action['input']['range_max']) ? $action['input']['range_max'] : 100;
+                    $out .= '<label for="'.$key.'">'.$action['label'].'</label>'.PHP_EOL;
+                    $out .= '<input type="range" class="control_range" name="'.$key.'" min="'.$range_min.'" max="'.$range_max.'" onchange="exec(this)" data-module="'.$module['metadata']['module'].'" data-action="'.$key.'">'.PHP_EOL;
+                } elseif ($action['input']['type'] === 'text') {
+                    $out .= '<label for="'.$key.'">'.$action['label'].'</label>'.PHP_EOL;
+                    $out .= '<input type="text" class="control_text" name="'.$key.'">'.PHP_EOL;
+                    $out .= '<button type="button" onclick="exec(this)" data-module="'.$module['metadata']['module'].'" data-action="'.$key.'" data-post-elem="'.$key.'">Update</button>'.PHP_EOL;
+                }
+                $out .= '</div>';
             }
             $out .= '</div>'.PHP_EOL;
             $out .= '<div class="module_info">'.PHP_EOL;

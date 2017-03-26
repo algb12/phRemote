@@ -59,8 +59,13 @@ phRemote is cross-platform by using "modules", which support, multiple platforms
         },
         "command_name2": {
             "label": "Command 2 button text",
+            "input": {
+                "type": "range",
+                "range_min": 0,
+                "range_max": 100
+            },
             "cmd": {
-                "Platform1": "command1",
+                "Platform1": "command1 {{value}}",
                 "Platform2": "command2"
             },
             "updaters": ["updater1, updater2"]
@@ -85,9 +90,44 @@ The `init` section contains the commands to be executed which retrieve the initi
 
 The `updaters` section contains the code to be executed to retrieve a callback to return back to the client browser. Commands are mapped to the relevant datafields.
 
-The `commands` section MUST be present in every module. It contains the command to be executed for each OS type, and specifies the updaters which succeed the command.
+The `commands` section MUST be present in every module. It contains the command to be executed for each OS type, and specifies the updaters which succeed the command. The `input` subsection specifies what type of input should be used for the command. See the list of available inputs and their config options below.
 
 The `info` section defines the datafields displaying values for parameters.
+
+### Inputs
+
+A command can have an "input" defined as a subsection of the relevant command in the module file.
+
+Currently available inputs are:
+
+- `button`: A simple button, does not pass any data to the command. The default input when none is specified.
+- `range`: A range slider, with following properties:
+
+  - `range_min`: The minimum of the range slider (default is `0`)
+  - `range_max`: The maximum of the range slider (default is `100`)
+  - Defined as follows within a module:
+
+    ```json
+    "input": {
+        "type": "range",
+        "range_min": 0,
+        "range_max": 100
+    }
+    ```
+
+  - The command itself can use the `{{value}}` placeholder to access the value passed by the range slider.
+
+- `text`: A text box, with an update button. Clicking on the update button will submit the text box content as a value to the command.
+
+  - Defined as follows within a module:
+
+    ```json
+    "input": {
+        "type": "text"
+    }
+    ```
+
+  - The command itself can use the `{{value}}` placeholder to access the value passed by the text box.
 
 ### OS/Platform types
 
@@ -95,7 +135,7 @@ A module may contain commands which are executed depending on the OS phRemote ru
 
 - Windows: `WIN`
 - OS X: `OSX`
-- Linux: `Linux`
+- Linux: `LINUX`
 - Unknown: `UNKNOWN`
 
 ### The modules.json file

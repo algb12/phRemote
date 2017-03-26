@@ -53,6 +53,18 @@
                 "LINUX": "amixer set Master toggle"
             },
             "updaters": ["vol_mute_state"]
+        },
+        "vol_level": {
+            "label": "Volume level",
+            "input": {
+                "type": "slider",
+                "range_min": 0,
+                "range_max": 100
+            },
+            "cmd": {
+                "OSX": "osascript -e 'set volume output volume {{value}}'"
+            },
+            "updaters": ["vol_level", "vol_mute_state"]
         }
     },
     "info": {
